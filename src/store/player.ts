@@ -36,6 +36,12 @@ const increase = (value: number, every: number, increaseBy: number): number => {
     return Math.floor(value/ every) * increaseBy;
 }
 
+// TODO - this is god object, you should extract to
+// stat, ability -> this two thing can stay in weapon and ammor too
+// then we get all base, weapon, ammor then sum in this class
+
+// TODO - for more advance we can create readable file config to easy manipulate the stat calculation as designer
+// but this is over engineering, So this is (Optional)
 const useStore = create<PlayerStore>()((set) => ({
   name: "player1",
   race: "Human",

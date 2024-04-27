@@ -61,12 +61,12 @@ export default function Dashboard() {
         <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
           Player Info
         </h1>
-        <div className="hidden items-center gap-2 md:ml-auto md:flex">
+        {/* <div className="hidden items-center gap-2 md:ml-auto md:flex">
           <Button variant="outline" size="sm">
             Discard
           </Button>
-          <Button size="sm">Save Product</Button>
-        </div>
+          <Button size="sm">Save Player</Button>
+        </div> */}
       </div>
       <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
         <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">

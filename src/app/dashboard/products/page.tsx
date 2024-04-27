@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -37,8 +39,18 @@ import { Textarea } from "@/components/ui/textarea"
 import StatRow from "./stat-row"
 import SideCard from "./aside-card"
 import { Progress } from "@/components/ui/progress"
+import usePlayerStore from "@/store/player"
 
 export default function Dashboard() {
+  const {
+    name,
+    race,
+    hp,
+    mana,
+
+    setName,
+  } = usePlayerStore()
+
   return (
     <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
       <div className="flex items-center gap-4">
@@ -47,11 +59,8 @@ export default function Dashboard() {
           <span className="sr-only">Back</span>
         </Button>
         <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-          Pro Controller
+          Player Info
         </h1>
-        <Badge variant="outline" className="ml-auto sm:ml-0">
-          In stock
-        </Badge>
         <div className="hidden items-center gap-2 md:ml-auto md:flex">
           <Button variant="outline" size="sm">
             Discard
@@ -64,9 +73,9 @@ export default function Dashboard() {
           <Card x-chunk="dashboard-07-chunk-0">
             <CardHeader>
               <CardTitle className="flex gap-2">
-                <div>Player</div>
+                <div>{name}</div>
                 <Badge variant="outline" className="ml-auto sm:ml-0">
-                  Human
+                  {race}
                 </Badge>
               </CardTitle>
               <CardDescription>
@@ -81,7 +90,8 @@ export default function Dashboard() {
                     id="name"
                     type="text"
                     className="w-full"
-                    defaultValue="หัวร้อน"
+                    defaultValue="player1"
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
@@ -92,7 +102,7 @@ export default function Dashboard() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">1</div>
+                      <div className="text-2xl font-bold">{hp}</div>
                       <p className="text-xs text-muted-foreground">
                         Health Point
                       </p>
@@ -106,7 +116,7 @@ export default function Dashboard() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">20</div>
+                      <div className="text-2xl font-bold">{mana}</div>
                       <p className="text-xs text-muted-foreground">
                         Mana Point
                       </p>
@@ -159,8 +169,8 @@ export default function Dashboard() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {["Str", "Vit", "Dex", "Agi", "Int"].map((value: string) =>
-                    <StatRow name={value} />
+                  {["Str", "Vit", "Dex", "Agi", "Int"].map((value: string, index: number) =>
+                    <StatRow name={value} key={index} />
                   )}
                 </TableBody>
               </Table>

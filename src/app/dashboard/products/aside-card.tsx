@@ -12,8 +12,31 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
 import { Copy, Truck, MoreVertical, CreditCard, ChevronLeft, ChevronRight } from "lucide-react"
+import usePlayerStore from "@/store/player"
+
+interface Ability {
+    [key: string]: number;
+  }
 
 export default function AsideCard() {
+   const {
+    atk,
+    rdc,
+    acc,
+    def,
+    spd,
+    mag
+   } = usePlayerStore()
+
+   const abilities: Ability = {
+    "Atk": atk,
+    "Rdc": rdc,
+    "Acc": acc,
+    "Def": def,
+    "Spd": spd,
+    "Mag": mag,
+  }
+
   return (
     <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
         {/* <Card x-chunk="dashboard-07-chunk-3">
@@ -73,7 +96,7 @@ export default function AsideCard() {
                                     <span className="text-muted-foreground">
                                         {name}
                                     </span>
-                                    <span>0</span>
+                                    <span>{abilities[name]}</span>
                                 </li>
                             )
                     }
@@ -105,7 +128,7 @@ export default function AsideCard() {
                                     <span className="text-muted-foreground">
                                         {name}
                                     </span>
-                                    <span>0</span>
+                                    <span>{abilities[name]}</span>
                                 </li>
                             )
                     }

@@ -31,6 +31,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -40,6 +41,17 @@ import StatRow from "./stat-row"
 import SideCard from "./aside-card"
 import { Progress } from "@/components/ui/progress"
 import usePlayerStore from "@/store/player"
+import { useState } from "react"
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 export default function Dashboard() {
   const {
@@ -47,9 +59,28 @@ export default function Dashboard() {
     race,
     hp,
     mana,
-
+    acc,
+    atk,
     setName,
   } = usePlayerStore()
+  const [otherDef, setOtherDef] = useState<number>(0)
+  const [otherRdc, setOtherRdc] = useState<number>(0)
+  const [isModalOpen, setOpenModal] = useState<boolean>(false)
+  const [attackResult, setAttackResult] = useState<boolean>(false)
+  const [attackDMG, setAttackDMG] = useState<number>(0)
+  const [successRate, setSuccessRate] = useState<number>(0)
+
+  const calculateAttack = () => {
+    let chanceUnit = acc - otherDef;
+    let dmg = atk - otherRdc;
+    let hitChance = 0.5 + chanceUnit * 0.05;
+    hitChance = Math.max(0, Math.min(hitChance, 1))
+
+    setSuccessRate(Math.round(hitChance * 100))
+    setAttackResult(Math.random() < hitChance)
+    setAttackDMG(dmg)
+    setOpenModal(true)
+  }
 
   return (
     <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
@@ -179,10 +210,10 @@ export default function Dashboard() {
 
           <Card x-chunk="dashboard-07-chunk-2">
             <CardHeader>
-              <CardTitle>Product Category</CardTitle>
+              <CardTitle>Battle Helper</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-6 sm:grid-cols-3">
+              {/* <div className="grid gap-6 sm:grid-cols-3">
                 <div className="grid gap-3">
                   <Label htmlFor="category">Category</Label>
                   <Select>
@@ -223,10 +254,77 @@ export default function Dashboard() {
                     </SelectContent>
                   </Select>
                 </div>
-              </div>
+              </div> */}
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                      <TableHead className="w-[100px]">Type</TableHead>
+                      <TableHead>Unit</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                  <TableRow>
+                    <TableCell className="font-semibold">
+                      def
+                    </TableCell>
+                    <TableCell>
+                        <Label htmlFor="add-unit" className="sr-only">
+                          Unit
+                        </Label>
+                        <Input
+                          id="add-unit"
+                          type="number"
+                          defaultValue={0}
+                          value={otherDef}
+                          onChange={(e) => setOtherDef(Number.parseFloat(e.target.value))}
+                        />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">
+                      rdc
+                    </TableCell>
+                    <TableCell>
+                        <Label htmlFor="add-unit" className="sr-only">
+                          Unit
+                        </Label>
+                        <Input
+                          id="add-unit"
+                          type="number"
+                          defaultValue={0}
+                          value={otherRdc}
+                          onChange={(e) => setOtherRdc(Number.parseFloat(e.target.value))}
+                        />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+                <TableFooter>
+                  <div className="flex items-center justify-center pt-4">
+                    <Button size="sm" onClick={calculateAttack}>
+                      Calculate
+                    </Button>
+                  </div>
+                </TableFooter>
+              </Table>
             </CardContent>
           </Card>
         </div>
+        <Dialog open={isModalOpen} modal defaultOpen={isModalOpen} onOpenChange={(value) => setOpenModal(value)}>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader/>
+            <div className="grid gap-4 py-4 justify-center items-center text-center">
+              <h3 className="text-2xl font-bold tracking-tight">
+                Attack {attackResult ? "Successed" : "Failed"} ({successRate}%)
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                You attack with {attackResult ? attackDMG : 0}
+              </p>
+              <Button className="mt-4" onClick={()=> setOpenModal(false)}>OK</Button>
+            </div>
+            <DialogFooter/>
+          </DialogContent>
+        </Dialog>
+
         <SideCard />
       </div>
       <div className="flex items-center justify-center gap-2 md:hidden">

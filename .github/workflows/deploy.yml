@@ -33,6 +33,8 @@ jobs:
       - name: Build with Next.js 🏗️
         run: |
           npm run build
+          ls
+          pwd
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4

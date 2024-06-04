@@ -33,10 +33,16 @@ jobs:
       - name: Build with Next.js 🏗️
         run: npx next build
 
-      - name: Upload artifact 📡
-        uses: actions/upload-pages-artifact@v2
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: ./out/
+          deploy_key: ${{ secrets.ACTIONS_SECRET_KEY }}
+          publish_dir: ./out
+
+      # - name: Upload artifact 📡
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: ./out
 
   deploy:
     environment:

@@ -163,7 +163,7 @@ export default function Dashboard() {
                     <CardContent>
                       <div className="text-2xl font-bold">20</div>
                       <p className="text-xs text-muted-foreground">
-                      We're rich
+                      We are rich
                       </p>
                     </CardContent>
                   </Card>

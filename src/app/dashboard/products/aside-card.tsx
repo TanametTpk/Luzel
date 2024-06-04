@@ -91,8 +91,8 @@ export default function AsideCard() {
                     <div className="font-semibold">Base</div>
                     <ul className="grid gap-3">
                         {
-                            ["Atk", "Rdc", "Acc", "Def", "Spd", "Mag"].map((name) =>
-                                <li className="flex items-center justify-between">
+                            ["Atk", "Rdc", "Acc", "Def", "Spd", "Mag"].map((name, index) =>
+                                <li key={index} className="flex items-center justify-between">
                                     <span className="text-muted-foreground">
                                         {name}
                                     </span>
@@ -107,8 +107,8 @@ export default function AsideCard() {
                     <div className="font-semibold">Weapon</div>
                     <ul className="grid gap-3">
                         {
-                            ["Atk", "Rdc", "Acc", "Def", "Spd", "Mag"].map((name) =>
-                                <li className="flex items-center justify-between">
+                            ["Atk", "Rdc", "Acc", "Def", "Spd", "Mag"].map((name, index) =>
+                                <li key={index} className="flex items-center justify-between">
                                     <span className="text-muted-foreground">
                                         {name}
                                     </span>
@@ -123,8 +123,8 @@ export default function AsideCard() {
                     <div className="font-semibold">Total</div>
                     <ul className="grid gap-3">
                         {
-                            ["Atk", "Rdc", "Acc", "Def", "Spd", "Mag"].map((name) =>
-                                <li className="flex items-center justify-between">
+                            ["Atk", "Rdc", "Acc", "Def", "Spd", "Mag"].map((name, index) =>
+                                <li key={index} className="flex items-center justify-between">
                                     <span className="text-muted-foreground">
                                         {name}
                                     </span>

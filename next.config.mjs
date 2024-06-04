@@ -6,6 +6,7 @@ const nextConfig = {
         unoptimized: true
     },
     reactStrictMode: true,
+    assetPrefix: isProd ? '/luzel/' : '',
 };
 
 export default nextConfig;

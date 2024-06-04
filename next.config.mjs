@@ -2,6 +2,9 @@
 const nextConfig = {
     basePath: "/luzel",
     output: "export",  // <=== enables static exports
+    images: {
+        unoptimized: true
+    },
     reactStrictMode: true,
 };
 

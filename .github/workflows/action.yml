@@ -1,5 +1,9 @@
 name: setup-node
 description: "Setup Node.js ⚙️ - Cache dependencies ⚡ - Install dependencies 🔧"
+on:
+  push:
+    branches:
+      - main
 runs:
   using: "composite"
   steps:

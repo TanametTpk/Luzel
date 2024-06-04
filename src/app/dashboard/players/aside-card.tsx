@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
 import { Copy, Truck, MoreVertical, CreditCard, ChevronLeft, ChevronRight } from "lucide-react"
 import usePlayerStore from "@/store/player"
+import useWeaponStore from "@/store/weapon"
 
 interface Ability {
     [key: string]: number;
@@ -28,6 +29,15 @@ export default function AsideCard() {
     mag
    } = usePlayerStore()
 
+   const [
+    weaponAtk,
+    weaponRdc,
+    weaponAcc,
+    weaponDef,
+    weaponSpd,
+    WeaponMag,
+  ] = useWeaponStore((state) => [state.atk, state.rdc, state.acc, state.def, state.spd, state.mag])
+
    const abilities: Ability = {
     "Atk": atk,
     "Rdc": rdc,
@@ -35,6 +45,15 @@ export default function AsideCard() {
     "Def": def,
     "Spd": spd,
     "Mag": mag,
+  }
+
+  const weaponAbilities: Ability = {
+    "Atk": weaponAtk,
+    "Rdc": weaponRdc,
+    "Acc": weaponAcc,
+    "Def": weaponDef,
+    "Spd": weaponSpd,
+    "Mag": WeaponMag,
   }
 
   return (
@@ -112,7 +131,7 @@ export default function AsideCard() {
                                     <span className="text-muted-foreground">
                                         {name}
                                     </span>
-                                    <span>0</span>
+                                    <span>{weaponAbilities[name]}</span>
                                 </li>
                             )
                     }
@@ -128,7 +147,7 @@ export default function AsideCard() {
                                     <span className="text-muted-foreground">
                                         {name}
                                     </span>
-                                    <span>{abilities[name]}</span>
+                                    <span>{abilities[name] + weaponAbilities[name]}</span>
                                 </li>
                             )
                     }

@@ -41,6 +41,7 @@ import StatRow from "./stat-row"
 import SideCard from "./aside-card"
 import { Progress } from "@/components/ui/progress"
 import usePlayerStore from "@/store/player"
+import useWeaponStore from "@/store/weapon"
 import { useState } from "react"
 
 import {
@@ -52,6 +53,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import WeaponStatRow from "./weapon-row"
 
 export default function Dashboard() {
   const {
@@ -63,6 +65,15 @@ export default function Dashboard() {
     atk,
     setName,
   } = usePlayerStore()
+
+  const [
+    weaponAtk,
+    weaponRdc,
+    weaponAcc,
+    weaponDef,
+    weaponSpd,
+    WeaponMag,
+  ] = useWeaponStore((state) => [state.atk, state.rdc, state.acc, state.def, state.spd, state.mag])
   const [otherDef, setOtherDef] = useState<number>(0)
   const [otherRdc, setOtherRdc] = useState<number>(0)
   const [isModalOpen, setOpenModal] = useState<boolean>(false)
@@ -71,8 +82,8 @@ export default function Dashboard() {
   const [successRate, setSuccessRate] = useState<number>(0)
 
   const calculateAttack = () => {
-    let chanceUnit = acc - otherDef;
-    let dmg = atk - otherRdc;
+    let chanceUnit = acc + weaponAcc - otherDef;
+    let dmg = atk + weaponAtk - otherRdc;
     let hitChance = 0.5 + chanceUnit * 0.05;
     hitChance = Math.max(0, Math.min(hitChance, 1))
 
@@ -101,7 +112,7 @@ export default function Dashboard() {
       </div>
       <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
         <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
-          <Card x-chunk="dashboard-07-chunk-0">
+          {/* <Card x-chunk="dashboard-07-chunk-0">
             <CardHeader>
               <CardTitle className="flex gap-2">
                 <div>{name}</div>
@@ -182,7 +193,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
           <Card x-chunk="dashboard-07-chunk-1">
             <CardHeader>
               <CardTitle>Attribute</CardTitle>
@@ -195,13 +206,36 @@ export default function Dashboard() {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-[100px]">Type</TableHead>
-                    <TableHead>Original Unit</TableHead>
                     <TableHead>Unit</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {["Str", "Vit", "Dex", "Agi", "Int"].map((value: string, index: number) =>
                     <StatRow name={value} key={index} />
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
+          <Card x-chunk="dashboard-07-chunk-1">
+            <CardHeader>
+              <CardTitle>Weapon Stat</CardTitle>
+              <CardDescription>
+                Weapon stat of player
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[100px]">Type</TableHead>
+                    <TableHead>Unit</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {["Atk", "Rdc", "Acc", "Def", "Spd", "Mag"].map((value: string, index: number) =>
+                    <WeaponStatRow name={value} key={index} />
                   )}
                 </TableBody>
               </Table>

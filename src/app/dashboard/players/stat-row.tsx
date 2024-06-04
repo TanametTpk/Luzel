@@ -64,16 +64,6 @@ export default function StatRow({
           {name}
         </TableCell>
         <TableCell>
-            <Label htmlFor="ori-unit" className="sr-only">
-              Original Unit
-            </Label>
-            <Input
-            id="ori-unit"
-            type="number"
-            defaultValue="100"
-            />
-        </TableCell>
-        <TableCell>
             <Label htmlFor="add-unit" className="sr-only">
               Unit
             </Label>

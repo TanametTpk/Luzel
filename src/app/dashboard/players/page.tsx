@@ -315,7 +315,7 @@ export default function Dashboard() {
                   <TableBody>
                   <TableRow>
                     <TableCell className="font-semibold">
-                     our's buff atk
+                     our&apos;s buff atk
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">
@@ -332,7 +332,7 @@ export default function Dashboard() {
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-semibold">
-                      our's buff acc
+                      our&apos;s buff acc
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">
@@ -349,7 +349,7 @@ export default function Dashboard() {
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-semibold">
-                      our's buff crit
+                      our&apos;s buff crit
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">
@@ -366,7 +366,7 @@ export default function Dashboard() {
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-semibold">
-                      other's def
+                      other&apos;s def
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">
@@ -383,7 +383,7 @@ export default function Dashboard() {
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-semibold">
-                      other' s rdc
+                      other&apos;s rdc
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">

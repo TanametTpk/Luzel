@@ -28,6 +28,7 @@ export default function WeaponStatRow({
     def,
     spd,
     mag,
+    crit,
 
     setAtk,
     setRdc,
@@ -35,6 +36,7 @@ export default function WeaponStatRow({
     setDef,
     setSpd,
     setMag,
+    setCrit
   } = useWeaponStore()
 
   const stats: Stat = {
@@ -62,6 +64,10 @@ export default function WeaponStatRow({
         value: mag,
         onChange: setMag,
     },
+    "Crit": {
+        value: crit,
+        onChange: setCrit,
+    }
   }
 
   return (

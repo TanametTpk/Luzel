@@ -23,7 +23,7 @@ type PlayerStore = {
   spd: number
   mag: number
 
-  reduceCriticalDifficulty: number
+  crit: number
 
   setName: (newName: string) => void
   setRace: (newRace: string) => void
@@ -61,21 +61,21 @@ const useStore = create<PlayerStore>()((set) => ({
   mana: 1,
   lifePoint: 4,
 
+  // setter value
   str: 0,
   vit: 0,
   dex: 0,
   agi: 0,
   int: 0,
   
+  // pre calculate value
   atk: -2,
   rdc: 0,
   acc: 0,
   def: 0,
   spd: 0,
   mag: -2,
-
-  // using for cache value
-  reduceCriticalDifficulty: 0,
+  crit: 0,
 
   setName: (newName) => set((state) => ({ name: newName })),
   setRace: (newRace) => set((state) => ({ race: newRace})),
@@ -86,7 +86,7 @@ const useStore = create<PlayerStore>()((set) => ({
 
   setStr: (value) => set((state) => ({ str: value, atk: increase(value, 2, 1)})),
   setVit: (value) => set((state) => ({ vit: value, hp: increase(value, 2, 1), rdc: increase(value, 4, 1)})),
-  setDex: (value) => set((state) => ({ dex: value, acc: increase(value, 2, 1), reduceCriticalDifficulty: increase(value, 4, 1)})),
+  setDex: (value) => set((state) => ({ dex: value, acc: increase(value, 2, 1), crit: increase(value, 4, 1)})),
   setAgi: (value) => set((state) => ({ agi: value, spd: value, def: increase(value, 2, 1)})),
   setInt: (value) => set((state) => ({ int: value, mana: increase(value, 2, 1), mag: increase(value, 2, 1)})),
 }))

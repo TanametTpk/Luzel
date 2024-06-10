@@ -7,6 +7,7 @@ type WeaponStore = {
   def: number
   spd: number
   mag: number
+  crit: number
 
   setAtk: (value: number) => void
   setRdc: (value: number) => void
@@ -14,6 +15,7 @@ type WeaponStore = {
   setDef: (value: number) => void
   setSpd: (value: number) => void
   setMag: (value: number) => void
+  setCrit: (value: number) => void
 }
 
 const useStore = create<WeaponStore>()((set) => ({
@@ -23,6 +25,7 @@ const useStore = create<WeaponStore>()((set) => ({
   def: 0,
   spd: 0,
   mag: 0,
+  crit: 0,
 
   setAtk: (value) => set((state) => ({ atk: value,})),
   setRdc: (value) => set((state) => ({ rdc: value})),
@@ -30,6 +33,7 @@ const useStore = create<WeaponStore>()((set) => ({
   setDef: (value) => set((state) => ({ def: value})),
   setSpd: (value) => set((state) => ({ spd: value})),
   setMag: (value) => set((state) => ({ mag: value})),
+  setCrit: (value) => set((state) => ({ crit: value})),
 }))
 
 export default useStore

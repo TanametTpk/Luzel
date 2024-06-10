@@ -26,7 +26,8 @@ export default function AsideCard() {
     acc,
     def,
     spd,
-    mag
+    mag,
+    crit,
    } = usePlayerStore()
 
    const [
@@ -36,7 +37,8 @@ export default function AsideCard() {
     weaponDef,
     weaponSpd,
     WeaponMag,
-  ] = useWeaponStore((state) => [state.atk, state.rdc, state.acc, state.def, state.spd, state.mag])
+    WeaponCrit,
+  ] = useWeaponStore((state) => [state.atk, state.rdc, state.acc, state.def, state.spd, state.mag, state.crit])
 
    const abilities: Ability = {
     "Atk": atk,
@@ -45,6 +47,7 @@ export default function AsideCard() {
     "Def": def,
     "Spd": spd,
     "Mag": mag,
+    "Crit": crit,
   }
 
   const weaponAbilities: Ability = {
@@ -54,6 +57,7 @@ export default function AsideCard() {
     "Def": weaponDef,
     "Spd": weaponSpd,
     "Mag": WeaponMag,
+    "Crit": WeaponCrit,
   }
 
   return (
@@ -110,7 +114,7 @@ export default function AsideCard() {
                     <div className="font-semibold">Base</div>
                     <ul className="grid gap-3">
                         {
-                            ["Atk", "Rdc", "Acc", "Def", "Spd", "Mag"].map((name, index) =>
+                            ["Atk", "Rdc", "Acc", "Def", "Spd", "Mag", "Crit"].map((name, index) =>
                                 <li key={index} className="flex items-center justify-between">
                                     <span className="text-muted-foreground">
                                         {name}
@@ -126,7 +130,7 @@ export default function AsideCard() {
                     <div className="font-semibold">Weapon</div>
                     <ul className="grid gap-3">
                         {
-                            ["Atk", "Rdc", "Acc", "Def", "Spd", "Mag"].map((name, index) =>
+                            ["Atk", "Rdc", "Acc", "Def", "Spd", "Mag", "Crit"].map((name, index) =>
                                 <li key={index} className="flex items-center justify-between">
                                     <span className="text-muted-foreground">
                                         {name}
@@ -142,7 +146,7 @@ export default function AsideCard() {
                     <div className="font-semibold">Total</div>
                     <ul className="grid gap-3">
                         {
-                            ["Atk", "Rdc", "Acc", "Def", "Spd", "Mag"].map((name, index) =>
+                            ["Atk", "Rdc", "Acc", "Def", "Spd", "Mag", "Crit"].map((name, index) =>
                                 <li key={index} className="flex items-center justify-between">
                                     <span className="text-muted-foreground">
                                         {name}

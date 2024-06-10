@@ -64,6 +64,7 @@ export default function Dashboard() {
     dex,
     acc,
     atk,
+    crit,
     setName,
   } = usePlayerStore()
 
@@ -74,25 +75,36 @@ export default function Dashboard() {
     weaponDef,
     weaponSpd,
     WeaponMag,
-  ] = useWeaponStore((state) => [state.atk, state.rdc, state.acc, state.def, state.spd, state.mag])
+    WeaponCrit
+  ] = useWeaponStore((state) => [state.atk, state.rdc, state.acc, state.def, state.spd, state.mag, state.crit])
+  const [ourAtk, setOurAtk] = useState<number>(0)
+  const [ourAcc, setOurAcc] = useState<number>(0)
+  const [ourCrit, setOurCrit] = useState<number>(0)
   const [otherDef, setOtherDef] = useState<number>(0)
   const [otherRdc, setOtherRdc] = useState<number>(0)
   const [isModalOpen, setOpenModal] = useState<boolean>(false)
   const [attackResult, setAttackResult] = useState<boolean>(false)
+  const [critResult, setCritResult] = useState<boolean>(false)
   const [attackDMG, setAttackDMG] = useState<number>(0)
   const [successRate, setSuccessRate] = useState<number>(0)
+  const [critRate, setCritRate] = useState<number>(0)
 
   const calculateAttack = () => {
-    let chanceUnit = acc + weaponAcc - otherDef;
-    let dmg = atk + weaponAtk - otherRdc;
+    let chanceUnit = acc + ourAcc + weaponAcc - otherDef;
+    let critChance = (1 + crit + WeaponCrit + ourCrit) * 0.05
+    critChance = Math.max(0, Math.min(critChance, 1))
+    let isCrit = Math.random() < critChance
+    let baseDmg = atk + weaponAtk + ourAtk
+    if (isCrit) baseDmg *= 2
+
+    let dmg = baseDmg - otherRdc;
     let hitChance = 0.5 + chanceUnit * 0.05;
     hitChance = Math.max(0, Math.min(hitChance, 1))
-    // + crit 5% * (1+(dex/4)) attribute
-    // + crit weapon
-    // if dmg * 2 by pass accuracy and alway hit and - other rdc
 
     setSuccessRate(Math.round(hitChance * 100))
-    setAttackResult(Math.random() < hitChance)
+    setCritRate(Math.round(critChance * 100))
+    setAttackResult(isCrit || Math.random() < hitChance)
+    setCritResult(isCrit)
     setAttackDMG(dmg)
     setOpenModal(true)
   }
@@ -238,7 +250,7 @@ export default function Dashboard() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {["Atk", "Rdc", "Acc", "Def", "Spd", "Mag"].map((value: string, index: number) =>
+                  {["Atk", "Rdc", "Acc", "Def", "Spd", "Mag", "Crit"].map((value: string, index: number) =>
                     <WeaponStatRow name={value} key={index} />
                   )}
                 </TableBody>
@@ -303,7 +315,58 @@ export default function Dashboard() {
                   <TableBody>
                   <TableRow>
                     <TableCell className="font-semibold">
-                      def
+                     our's buff atk
+                    </TableCell>
+                    <TableCell>
+                        <Label htmlFor="add-unit" className="sr-only">
+                          Unit
+                        </Label>
+                        <Input
+                          id="add-unit"
+                          type="number"
+                          defaultValue={0}
+                          value={ourAtk}
+                          onChange={(e) => setOurAtk(Number.parseFloat(e.target.value))}
+                        />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">
+                      our's buff acc
+                    </TableCell>
+                    <TableCell>
+                        <Label htmlFor="add-unit" className="sr-only">
+                          Unit
+                        </Label>
+                        <Input
+                          id="add-unit"
+                          type="number"
+                          defaultValue={0}
+                          value={ourAcc}
+                          onChange={(e) => setOurAcc(Number.parseFloat(e.target.value))}
+                        />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">
+                      our's buff crit
+                    </TableCell>
+                    <TableCell>
+                        <Label htmlFor="add-unit" className="sr-only">
+                          Unit
+                        </Label>
+                        <Input
+                          id="add-unit"
+                          type="number"
+                          defaultValue={0}
+                          value={ourCrit}
+                          onChange={(e) => setOurCrit(Number.parseFloat(e.target.value))}
+                        />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">
+                      other's def
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">
@@ -320,7 +383,7 @@ export default function Dashboard() {
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-semibold">
-                      rdc
+                      other' s rdc
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">
@@ -352,10 +415,10 @@ export default function Dashboard() {
             <DialogHeader/>
             <div className="grid gap-4 py-4 justify-center items-center text-center">
               <h3 className="text-2xl font-bold tracking-tight">
-                Attack {attackResult ? "Successed" : "Failed"} ({successRate}%)
+                Attack {attackResult ? "Successed" : "Failed"} (atk:{successRate}%, crit:{critRate}%)
               </h3>
               <p className="text-sm text-muted-foreground">
-                You attack with {attackResult ? attackDMG : 0}
+                You attack with {attackResult ? attackDMG : 0}{critResult ? " Critical!" : ""}
               </p>
               <Button className="mt-4" onClick={()=> setOpenModal(false)}>OK</Button>
             </div>

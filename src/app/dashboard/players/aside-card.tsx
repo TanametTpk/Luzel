@@ -127,7 +127,7 @@ export default function AsideCard() {
                 </div>
                 <Separator className="my-4" />
                 <div className="grid gap-3">
-                    <div className="font-semibold">Weapon</div>
+                    <div className="font-semibold">Equipment</div>
                     <ul className="grid gap-3">
                         {
                             ["Atk", "Rdc", "Acc", "Def", "Spd", "Mag", "Crit"].map((name, index) =>

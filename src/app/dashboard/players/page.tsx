@@ -61,6 +61,7 @@ export default function Dashboard() {
     race,
     hp,
     mana,
+    dex,
     acc,
     atk,
     setName,
@@ -86,6 +87,9 @@ export default function Dashboard() {
     let dmg = atk + weaponAtk - otherRdc;
     let hitChance = 0.5 + chanceUnit * 0.05;
     hitChance = Math.max(0, Math.min(hitChance, 1))
+    // + crit 5% * (1+(dex/4)) attribute
+    // + crit weapon
+    // if dmg * 2 by pass accuracy and alway hit and - other rdc
 
     setSuccessRate(Math.round(hitChance * 100))
     setAttackResult(Math.random() < hitChance)
@@ -220,9 +224,9 @@ export default function Dashboard() {
 
           <Card x-chunk="dashboard-07-chunk-1">
             <CardHeader>
-              <CardTitle>Weapon Stat</CardTitle>
+              <CardTitle>Equipment Stat</CardTitle>
               <CardDescription>
-                Weapon stat of player
+              Equipment stat of player
               </CardDescription>
             </CardHeader>
             <CardContent>

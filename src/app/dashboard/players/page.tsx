@@ -65,6 +65,7 @@ export default function Dashboard() {
     acc,
     atk,
     crit,
+    mag,
     setName,
   } = usePlayerStore()
 
@@ -79,6 +80,7 @@ export default function Dashboard() {
   ] = useWeaponStore((state) => [state.atk, state.rdc, state.acc, state.def, state.spd, state.mag, state.crit])
   const [ourAtk, setOurAtk] = useState<number>(0)
   const [ourAcc, setOurAcc] = useState<number>(0)
+  const [ourMag, setOurMag] = useState<number>(0)
   const [ourCrit, setOurCrit] = useState<number>(0)
   const [otherDef, setOtherDef] = useState<number>(0)
   const [otherRdc, setOtherRdc] = useState<number>(0)
@@ -95,6 +97,26 @@ export default function Dashboard() {
     critChance = Math.max(0, Math.min(critChance, 1))
     let isCrit = Math.random() < critChance
     let baseDmg = atk + weaponAtk + ourAtk
+    if (isCrit) baseDmg *= 2
+
+    let dmg = baseDmg - otherRdc;
+    let hitChance = 0.5 + chanceUnit * 0.05;
+    hitChance = Math.max(0, Math.min(hitChance, 1))
+
+    setSuccessRate(Math.round(hitChance * 100))
+    setCritRate(Math.round(critChance * 100))
+    setAttackResult(isCrit || Math.random() < hitChance)
+    setCritResult(isCrit)
+    setAttackDMG(dmg)
+    setOpenModal(true)
+  }
+
+  const calculateSpellAttack = () => {
+    let chanceUnit = mag + ourMag - otherDef;
+    let critChance = (1 + crit + WeaponCrit + ourCrit) * 0.05
+    critChance = Math.max(0, Math.min(critChance, 1))
+    let isCrit = Math.random() < critChance
+    let baseDmg = mag + ourMag
     if (isCrit) baseDmg *= 2
 
     let dmg = baseDmg - otherRdc;
@@ -261,7 +283,7 @@ export default function Dashboard() {
 
           <Card x-chunk="dashboard-07-chunk-2">
             <CardHeader>
-              <CardTitle>Battle Helper</CardTitle>
+              <CardTitle>Battle Helper (Physical)</CardTitle>
             </CardHeader>
             <CardContent>
               {/* <div className="grid gap-6 sm:grid-cols-3">
@@ -410,13 +432,106 @@ export default function Dashboard() {
               </Table>
             </CardContent>
           </Card>
+
+          <Card x-chunk="dashboard-07-chunk-2">
+            <CardHeader>
+              <CardTitle>Battle Helper (Spell)</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                      <TableHead className="w-[100px]">Type</TableHead>
+                      <TableHead>Unit</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                  <TableRow>
+                    <TableCell className="font-semibold">
+                     our&apos;s buff mag
+                    </TableCell>
+                    <TableCell>
+                        <Label htmlFor="add-unit" className="sr-only">
+                          Unit
+                        </Label>
+                        <Input
+                          id="add-unit"
+                          type="number"
+                          defaultValue={0}
+                          value={ourMag}
+                          onChange={(e) => setOurMag(Number.parseFloat(e.target.value))}
+                        />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">
+                      our&apos;s buff crit
+                    </TableCell>
+                    <TableCell>
+                        <Label htmlFor="add-unit" className="sr-only">
+                          Unit
+                        </Label>
+                        <Input
+                          id="add-unit"
+                          type="number"
+                          defaultValue={0}
+                          value={ourCrit}
+                          onChange={(e) => setOurCrit(Number.parseFloat(e.target.value))}
+                        />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">
+                      other&apos;s def
+                    </TableCell>
+                    <TableCell>
+                        <Label htmlFor="add-unit" className="sr-only">
+                          Unit
+                        </Label>
+                        <Input
+                          id="add-unit"
+                          type="number"
+                          defaultValue={0}
+                          value={otherDef}
+                          onChange={(e) => setOtherDef(Number.parseFloat(e.target.value))}
+                        />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">
+                      other&apos;s rdc
+                    </TableCell>
+                    <TableCell>
+                        <Label htmlFor="add-unit" className="sr-only">
+                          Unit
+                        </Label>
+                        <Input
+                          id="add-unit"
+                          type="number"
+                          defaultValue={0}
+                          value={otherRdc}
+                          onChange={(e) => setOtherRdc(Number.parseFloat(e.target.value))}
+                        />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+                <TableFooter>
+                  <div className="flex items-center justify-center pt-4">
+                    <Button size="sm" onClick={calculateSpellAttack}>
+                      Calculate
+                    </Button>
+                  </div>
+                </TableFooter>
+              </Table>
+            </CardContent>
+          </Card>
         </div>
         <Dialog open={isModalOpen} modal defaultOpen={isModalOpen} onOpenChange={(value) => setOpenModal(value)}>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader/>
             <div className="grid gap-4 py-4 justify-center items-center text-center">
               <h3 className="text-2xl font-bold tracking-tight">
-                Attack {attackResult ? "Successed" : "Failed"} (atk:{successRate}%, crit:{critRate}%)
+                Attack {attackResult ? "Successed" : "Failed"} (rate:{successRate}%, crit:{critRate}%)
               </h3>
               <p className="text-sm text-muted-foreground">
                 You attack with {attackResult ? attackDMG : 0}{critResult ? " Critical!" : ""}

@@ -81,9 +81,14 @@ export default function Dashboard() {
   const [ourAtk, setOurAtk] = useState<number>(0)
   const [ourAcc, setOurAcc] = useState<number>(0)
   const [ourMag, setOurMag] = useState<number>(0)
+  const [ourMagAtk, setOurMagAtk] = useState<number>(0)
+  const [ourMagAcc, setOurMagAcc] = useState<number>(0)
   const [ourCrit, setOurCrit] = useState<number>(0)
+  const [ourMagCritRate, setOurMagCritRate] = useState<number>(0)
   const [otherDef, setOtherDef] = useState<number>(0)
   const [otherRdc, setOtherRdc] = useState<number>(0)
+  const [otherMacDef, setOtherMacDef] = useState<number>(0)
+  const [otherMacRdc, setOtherMacRdc] = useState<number>(0)
   const [isModalOpen, setOpenModal] = useState<boolean>(false)
   const [attackResult, setAttackResult] = useState<boolean>(false)
   const [critResult, setCritResult] = useState<boolean>(false)
@@ -112,14 +117,14 @@ export default function Dashboard() {
   }
 
   const calculateSpellAttack = () => {
-    let chanceUnit = mag + ourMag - otherDef;
-    let critChance = (1 + crit + WeaponCrit + ourCrit) * 0.05
+    let chanceUnit = mag + ourMag + ourMagAcc - otherMacDef;
+    let critChance = (1 + crit + ourMagCritRate) * 0.05
     critChance = Math.max(0, Math.min(critChance, 1))
     let isCrit = Math.random() < critChance
-    let baseDmg = mag + ourMag
+    let baseDmg = mag + ourMag + ourMagAtk
     if (isCrit) baseDmg *= 2
 
-    let dmg = baseDmg - otherRdc;
+    let dmg = baseDmg - otherMacRdc;
     let hitChance = 0.5 + chanceUnit * 0.05;
     hitChance = Math.max(0, Math.min(hitChance, 1))
 
@@ -338,7 +343,7 @@ export default function Dashboard() {
                   <TableBody>
                   <TableRow>
                     <TableCell className="font-semibold">
-                     our&apos;s buff atk
+                     buff atk
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">
@@ -355,7 +360,7 @@ export default function Dashboard() {
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-semibold">
-                      our&apos;s buff acc
+                      buff acc
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">
@@ -372,7 +377,7 @@ export default function Dashboard() {
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-semibold">
-                      our&apos;s buff crit
+                      buff crit
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">
@@ -389,7 +394,7 @@ export default function Dashboard() {
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-semibold">
-                      other&apos;s def
+                      target&apos;s def
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">
@@ -406,7 +411,7 @@ export default function Dashboard() {
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-semibold">
-                      other&apos;s rdc
+                      target&apos;s rdc
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">
@@ -448,7 +453,7 @@ export default function Dashboard() {
                   <TableBody>
                   <TableRow>
                     <TableCell className="font-semibold">
-                     our&apos;s buff mag
+                     buff total Mag
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">
@@ -465,7 +470,7 @@ export default function Dashboard() {
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-semibold">
-                      our&apos;s buff crit
+                     buff mag atk
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">
@@ -475,14 +480,14 @@ export default function Dashboard() {
                           id="add-unit"
                           type="number"
                           defaultValue={0}
-                          value={ourCrit}
-                          onChange={(e) => setOurCrit(Number.parseFloat(e.target.value))}
+                          value={ourMagAtk}
+                          onChange={(e) => setOurMagAtk(Number.parseFloat(e.target.value))}
                         />
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-semibold">
-                      other&apos;s def
+                     buff mag acc
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">
@@ -492,14 +497,14 @@ export default function Dashboard() {
                           id="add-unit"
                           type="number"
                           defaultValue={0}
-                          value={otherDef}
-                          onChange={(e) => setOtherDef(Number.parseFloat(e.target.value))}
+                          value={ourMagAcc}
+                          onChange={(e) => setOurMagAcc(Number.parseFloat(e.target.value))}
                         />
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-semibold">
-                      other&apos;s rdc
+                      buff crit
                     </TableCell>
                     <TableCell>
                         <Label htmlFor="add-unit" className="sr-only">
@@ -509,8 +514,42 @@ export default function Dashboard() {
                           id="add-unit"
                           type="number"
                           defaultValue={0}
-                          value={otherRdc}
-                          onChange={(e) => setOtherRdc(Number.parseFloat(e.target.value))}
+                          value={ourMagCritRate}
+                          onChange={(e) => setOurMagCritRate(Number.parseFloat(e.target.value))}
+                        />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">
+                    target&apos;s def
+                    </TableCell>
+                    <TableCell>
+                        <Label htmlFor="add-unit" className="sr-only">
+                          Unit
+                        </Label>
+                        <Input
+                          id="add-unit"
+                          type="number"
+                          defaultValue={0}
+                          value={otherMacDef}
+                          onChange={(e) => setOtherMacDef(Number.parseFloat(e.target.value))}
+                        />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">
+                      target&apos;s rdc
+                    </TableCell>
+                    <TableCell>
+                        <Label htmlFor="add-unit" className="sr-only">
+                          Unit
+                        </Label>
+                        <Input
+                          id="add-unit"
+                          type="number"
+                          defaultValue={0}
+                          value={otherMacRdc}
+                          onChange={(e) => setOtherMacRdc(Number.parseFloat(e.target.value))}
                         />
                     </TableCell>
                   </TableRow>

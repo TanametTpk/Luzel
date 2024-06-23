@@ -222,7 +222,8 @@ export default function Dashboard() {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-[100px]">Type</TableHead>
-                    <TableHead>Unit</TableHead>
+                    <TableHead>Unit1</TableHead>
+                    <TableHead>Unit2</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>

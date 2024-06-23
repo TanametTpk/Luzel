@@ -27,7 +27,7 @@ const useStore = create<WeaponStore>()((set) => ({
   mag: 0,
   crit: 0,
 
-  setAtk: (value) => set((state) => ({ atk: value,})),
+  setAtk: (value) => set((state) => ({ atk: value})),
   setRdc: (value) => set((state) => ({ rdc: value})),
   setAcc: (value) => set((state) => ({ acc: value})),
   setDef: (value) => set((state) => ({ def: value})),
